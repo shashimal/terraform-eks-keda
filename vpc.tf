@@ -1,4 +1,4 @@
-module "service_provider_account_vpc" {
+module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~>6.4"
 
