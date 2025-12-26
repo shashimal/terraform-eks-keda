@@ -3,11 +3,11 @@ module "service_provider_account_vpc" {
   version = "~>6.4"
 
   name = "${local.app_name}-vpc"
-  cidr = local.service_provider_vpc_cidr
+  cidr = local.cidr
 
-  azs             = ["${local.aws_region}a", "${local.aws_region}b"]
-  public_subnets  = local.service_provider_vpc_public_subnets
-  private_subnets = local.service_provider_vpc_private_subnets
+  azs             = ["${data.aws_region.current.region}a", "${data.aws_region.current.region}b"]
+  public_subnets  = local.public_subnets
+  private_subnets = local.private_subnets
 
   enable_nat_gateway     = true
   single_nat_gateway     = true
@@ -18,7 +18,7 @@ module "service_provider_account_vpc" {
 
 
   tags = {
-    Name = "${local.service_provider_app_name}-vpc"
+    Name = "${local.app_name}-vpc"
   }
 
   private_subnet_tags = {
