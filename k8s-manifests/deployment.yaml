@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqs-consumer
+  namespace: app-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqs-consumer
+  template:
+    metadata:
+      labels:
+        app: sqs-consumer
+    spec:
+      serviceAccountName: keda-sqs-sa
+      containers:
+        - name: worker
+          image: public.ecr.aws/docker/library/busybox
+          command:
+            - sh
+            - -c
+            - |
+              while true; do
+                echo "Processing SQS message..."
+                sleep 10
+              done

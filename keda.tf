@@ -1,5 +1,5 @@
 locals {
-  keda_namespace = "keda-system"
+  keda_namespace = "keda"
 }
 
 resource "kubernetes_namespace_v1" "ns_keda" {
@@ -22,7 +22,7 @@ module "keda_irsa" {
 
   oidc_providers = {
     eks = {
-      provider_arn               = module.eks.oidc_provider_arn
+      provider_arn = module.eks.oidc_provider_arn
       namespace_service_accounts = [
         "${local.keda_namespace}:keda-operator"
       ]
@@ -37,7 +37,7 @@ module "keda_irsa" {
 }
 
 resource "aws_iam_policy" "keda_sqs_policy" {
-  name = "keda-sqs-policy"
+  name   = "keda-sqs-policy"
   policy = data.aws_iam_policy_document.keda_sqs_policy_document.json
 }
 
@@ -45,8 +45,8 @@ resource "helm_release" "keda" {
   name       = "keda"
   repository = "https://kedacore.github.io/charts"
   chart      = "keda"
-  version    = "2.12.1"
-  namespace = local.keda_namespace
+  version    = "2.18.0"
+  namespace  = local.keda_namespace
 
   values = [
     yamlencode({
